@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eyegenic — Eye Care by Dr. Jennifer Tsai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Bright sky-teal palette */
+  --sky-pale:   #eaf6fb;
+  --sky-light:  #ceedf8;
+  --sky-mid:    #a0d8ef;
+  --sky-vivid:  #39b4d8;
+  --sky-deep:   #1a8fb0;
+  --teal-accent:#0d7a97;
+  --navy:       #0b2d3d;
+  --navy-mid:   #133a4d;
+
+  --white:      #ffffff;
+  --off-white:  #f4fafd;
+  --ink:        #0e1e26;
+  --ink-mid:    #1d3545;
+  --text-body:  #2c4a5a;
+  --text-soft:  #5b7d8e;
+  --text-faint: #8aafc0;
+  --gold:       #e8c06a;
+
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'Figtree', sans-serif;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--sky-pale);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─── CUSTOM CURSOR ─── */
+#cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--sky-vivid);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, width 0.3s var(--ease-out), height 0.3s var(--ease-out), background 0.3s;
+  mix-blend-mode: multiply;
+}
+#cursor-ring {
+  position: fixed;
+  width: 40px; height: 40px;
+  border: 1.5px solid var(--sky-vivid);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s var(--ease-out), width 0.4s var(--ease-out), height 0.4s var(--ease-out), opacity 0.3s;
+  opacity: 0.5;
+}
+body:hover #cursor { opacity: 1; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 52px;
+  transition: background 0.5s, box-shadow 0.5s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.07);
+  padding: 14px 52px;
+}
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-logo span { color: var(--sky-vivid); }
+.nav-links { display: flex; gap: 40px; list-style: none; }
+.nav-links a {
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-body);
+  text-decoration: none;
+  position: relative;
+  transition: color 0.2s;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0; right: 0;
+  height: 1px;
+  background: var(--sky-vivid);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-out);
+}
+.nav-links a:hover { color: var(--sky-deep); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-cta {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--sky-vivid);
+  padding: 11px 24px;
+  border-radius: 40px;
+  text-decoration: none;
+  transition: background 0.25s, transform 0.2s;
+  box-shadow: 0 4px 18px rgba(57,180,216,0.35);
+}
+.nav-cta:hover { background: var(--sky-deep); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(57,180,216,0.45); }
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  overflow: hidden;
+  padding: 0 52px;
+  padding-top: 80px;
+}
+
+/* Animated blobs */
+.blob-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.blob {
+  position: absolute;
+  border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+  filter: blur(60px);
+  animation: blobMorph 14s ease-in-out infinite alternate;
+}
+.blob-1 {
+  width: 700px; height: 600px;
+  background: rgba(160, 216, 239, 0.55);
+  top: -10%; left: -10%;
+  animation-duration: 16s;
+}
+.blob-2 {
+  width: 500px; height: 500px;
+  background: rgba(57, 180, 216, 0.3);
+  top: 30%; right: -5%;
+  animation-duration: 20s;
+  animation-delay: -5s;
+}
+.blob-3 {
+  width: 400px; height: 350px;
+  background: rgba(206, 237, 248, 0.7);
+  bottom: 0; left: 30%;
+  animation-duration: 18s;
+  animation-delay: -8s;
+}
+
+@keyframes blobMorph {
+  0%   { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; transform: translate(0,0) rotate(0deg); }
+  33%  { border-radius: 40% 60% 45% 55% / 60% 40% 55% 45%; transform: translate(20px, -30px) rotate(3deg); }
+  66%  { border-radius: 55% 45% 60% 40% / 45% 55% 50% 50%; transform: translate(-15px, 20px) rotate(-2deg); }
+  100% { border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%; transform: translate(10px, -10px) rotate(1deg); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding-right: 60px;
+}
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--sky-deep);
+  background: rgba(57,180,216,0.12);
+  border: 1px solid rgba(57,180,216,0.3);
+  padding: 7px 16px;
+  border-radius: 30px;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: slideIn 0.8s 0.1s var(--ease-out) forwards;
+}
+.kicker-dot {
+  width: 6px; height: 6px;
+  background: var(--sky-vivid);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+.hero-h1 {
+  font-family: var(--serif);
+  font-size: clamp(3.4rem, 6.5vw, 6rem);
+  font-weight: 300;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: slideIn 0.9s 0.25s var(--ease-out) forwards;
+}
+.hero-h1 em {
+  font-style: italic;
+  color: var(--sky-vivid);
+  display: block;
+}
+.hero-sub {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text-body);
+  max-width: 420px;
+  line-height: 1.75;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: slideIn 0.9s 0.4s var(--ease-out) forwards;
+}
+.hero-btns {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 52px;
+  opacity: 0;
+  animation: slideIn 0.9s 0.55s var(--ease-out) forwards;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 15px 30px;
+  border-radius: 40px;
+  text-decoration: none;
+  transition: all 0.3s var(--ease-out);
+  box-shadow: 0 6px 24px rgba(11,45,61,0.25);
+}
+.btn-primary:hover { background: var(--sky-deep); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(11,45,61,0.3); }
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--navy);
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 14px 30px;
+  border-radius: 40px;
+  border: 1.5px solid rgba(11,45,61,0.25);
+  text-decoration: none;
+  transition: all 0.3s var(--ease-out);
+}
+.btn-outline:hover { border-color: var(--sky-vivid); color: var(--sky-vivid); transform: translateY(-2px); }
+.hero-trust {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  opacity: 0;
+  animation: slideIn 0.9s 0.7s var(--ease-out) forwards;
+}
+.trust-item { display: flex; align-items: center; gap: 7px; font-size: 0.72rem; color: var(--text-soft); }
+.trust-icon { font-size: 0.85rem; }
+.trust-sep { width: 1px; height: 16px; background: rgba(11,45,61,0.15); }
+
+/* Hero Visual */
+.hero-visual {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.hero-img-stack {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+.hero-product-img {
+  width: 75%;
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 40px 80px rgba(57,180,216,0.3)) drop-shadow(0 0 2px rgba(57,180,216,0.15));
+  opacity: 0;
+  animation: floatIn 1.2s 0.6s var(--ease-out) forwards;
+  transform-origin: center bottom;
+}
+.hero-float-card-1,
+.hero-float-card-2 {
+  position: absolute;
+  background: white;
+  border-radius: 16px;
+  padding: 14px 18px;
+  box-shadow: 0 8px 40px rgba(11,45,61,0.12);
+  opacity: 0;
+  animation: floatCardIn 0.9s var(--ease-out) forwards;
+}
+.hero-float-card-1 {
+  top: 12%;
+  right: 0;
+  animation-delay: 1s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 180px;
+}
+.hero-float-card-2 {
+  bottom: 18%;
+  left: -10px;
+  animation-delay: 1.2s;
+  text-align: center;
+  min-width: 140px;
+}
+.fcard-icon { font-size: 1.6rem; }
+.fcard-label { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); }
+.fcard-val { font-family: var(--serif); font-size: 1rem; font-weight: 500; color: var(--navy); }
+.fcard-stars { color: var(--gold); font-size: 0.8rem; }
+.hero-circle-deco {
+  position: absolute;
+  width: 520px; height: 520px;
+  border-radius: 50%;
+  border: 1px solid rgba(57,180,216,0.2);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: rotateSlow 30s linear infinite;
+}
+.hero-circle-deco::before {
+  content: '';
+  position: absolute;
+  width: 8px; height: 8px;
+  background: var(--sky-vivid);
+  border-radius: 50%;
+  top: -4px; left: 50%;
+  transform: translateX(-50%);
+}
+
+@keyframes rotateSlow {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes floatIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes floatCardIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Floating animation for product */
+.hero-product-img { animation: floatIn 1.2s 0.6s var(--ease-out) forwards, floatBob 6s 2s ease-in-out infinite; }
+@keyframes floatBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* ─── MEDIA BAR ─── */
+.media-bar {
+  background: var(--navy);
+  padding: 24px 0;
+  overflow: hidden;
+  position: relative;
+}
+.media-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+  animation: marquee 30s linear infinite;
+  white-space: nowrap;
+  width: max-content;
+}
+.media-bar-inner:hover { animation-play-state: paused; }
+.media-kicker {
+  font-size: 0.58rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  flex-shrink: 0;
+}
+.media-name {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.55);
+  transition: color 0.2s;
+}
+.media-sep { color: var(--sky-mid); font-size: 0.45rem; }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ─── SHARED SECTION ─── */
+section { padding: 120px 52px; }
+.container { max-width: 1180px; margin: 0 auto; }
+.s-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--sky-deep);
+  margin-bottom: 18px;
+}
+.s-kicker::before {
+  content: '';
+  display: block;
+  width: 28px; height: 1.5px;
+  background: var(--sky-vivid);
+  border-radius: 2px;
+}
+.s-title {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--navy);
+}
+.s-title em { font-style: italic; color: var(--sky-vivid); }
+.s-body {
+  font-size: 0.92rem;
+  color: var(--text-body);
+  line-height: 1.85;
+}
+
+/* ─── CONDITIONS SECTION ─── */
+.conditions { background: var(--white); }
+.conditions-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  margin-bottom: 72px;
+}
+.conditions-image-col {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+}
+.cond-img-main {
+  flex: 1;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--sky-light);
+  aspect-ratio: 2/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cond-img-main img {
+  width: 75%;
+  object-fit: contain;
+  transition: transform 0.6s var(--ease-out);
+}
+.cond-img-main:hover img { transform: scale(1.04) rotate(-1deg); }
+.cond-img-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 44%;
+}
+.cond-img-thumb {
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--sky-pale);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cond-img-thumb img { width: 85%; object-fit: contain; transition: transform 0.5s var(--ease-out); }
+.cond-img-thumb:hover img { transform: scale(1.06); }
+.cond-content { align-self: end; }
+.cond-desc { max-width: 380px; margin-top: 20px; }
+
+.cond-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.cond-card {
+  background: var(--sky-pale);
+  border-radius: 20px;
+  padding: 32px 28px;
+  border: 1.5px solid transparent;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s var(--ease-out), box-shadow 0.3s;
+  cursor: default;
+}
+.cond-card:hover {
+  background: var(--white);
+  border-color: var(--sky-mid);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(57,180,216,0.15);
+}
+.cond-num {
+  font-family: var(--serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--sky-vivid);
+  opacity: 0.6;
+  margin-bottom: 16px;
+}
+.cond-icon-wrap {
+  width: 44px; height: 44px;
+  background: rgba(57,180,216,0.12);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  transition: background 0.3s;
+}
+.cond-card:hover .cond-icon-wrap { background: rgba(57,180,216,0.22); }
+.cond-icon-wrap svg { width: 22px; height: 22px; stroke: var(--sky-deep); stroke-width: 1.5; fill: none; }
+.cond-name {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.cond-text { font-size: 0.78rem; color: var(--text-soft); line-height: 1.65; }
+
+/* ─── INGREDIENT ─── */
+.ingredient {
+  background: linear-gradient(135deg, #0b2d3d 0%, #0f3d52 50%, #0b2d3d 100%);
+  overflow: hidden;
+  position: relative;
+  padding: 0;
+}
+.ingredient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 70% at 30% 50%, rgba(57,180,216,0.15), transparent 70%);
+}
+.ingredient-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 90vh;
+}
+.ingr-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(160,216,239,0.18) 0%, rgba(57,180,216,0.08) 100%);
+}
+.ingr-visual-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 60% 40%, rgba(160,216,239,0.25) 0%, transparent 60%);
+}
+.ingr-visual img {
+  position: relative;
+  z-index: 1;
+  width: 55%;
+  filter: drop-shadow(0 0 60px rgba(57,180,216,0.4));
+  animation: floatBob 7s ease-in-out infinite;
+}
+.ingr-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(57,180,216,0.18);
+  animation: expandRing 4s ease-out infinite;
+}
+.ingr-ring:nth-child(1) { width: 280px; height: 280px; animation-delay: 0s; }
+.ingr-ring:nth-child(2) { width: 420px; height: 420px; animation-delay: 1.3s; }
+.ingr-ring:nth-child(3) { width: 560px; height: 560px; animation-delay: 2.6s; }
+@keyframes expandRing {
+  0%   { opacity: 0.6; transform: scale(0.9); }
+  100% { opacity: 0; transform: scale(1.15); }
+}
+.ingr-label {
+  position: absolute;
+  bottom: 28px; left: 28px;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+.ingr-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 72px;
+  color: white;
+}
+.ingr-content .s-kicker { color: var(--sky-mid); }
+.ingr-content .s-kicker::before { background: var(--sky-mid); }
+.ingr-content .s-title { color: white; }
+.ingr-formula {
+  font-family: var(--serif);
+  font-size: 5.5rem;
+  font-weight: 300;
+  color: var(--sky-mid);
+  line-height: 1;
+  margin: 20px 0 28px;
+  letter-spacing: 0.06em;
+}
+.ingr-text { font-size: 0.9rem; color: rgba(255,255,255,0.62); line-height: 1.85; margin-bottom: 40px; max-width: 420px; }
+.ingr-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
+.pill {
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sky-mid);
+  border: 1px solid rgba(160,216,239,0.35);
+  padding: 7px 14px;
+  border-radius: 20px;
+  background: rgba(160,216,239,0.08);
+  transition: background 0.2s, border-color 0.2s;
+}
+.pill:hover { background: rgba(160,216,239,0.2); border-color: var(--sky-mid); }
+.ingr-list {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 28px;
+}
+.ingr-list-label { font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
+.ingr-list-val { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+/* ─── HOW TO ─── */
+.how-to { background: var(--sky-pale); }
+.how-to-top { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 72px; gap: 40px; }
+.how-to-note { font-size: 0.82rem; color: var(--text-soft); max-width: 280px; text-align: right; line-height: 1.7; }
+.how-to-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.mode-block {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 52px 48px;
+  border: 1.5px solid rgba(57,180,216,0.12);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.4s, transform 0.4s var(--ease-out);
+}
+.mode-block::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sky-mid), var(--sky-vivid));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-out);
+}
+.mode-block:hover { box-shadow: 0 20px 60px rgba(57,180,216,0.15); transform: translateY(-4px); }
+.mode-block:hover::after { transform: scaleX(1); }
+.mode-tag {
+  display: inline-block;
+  background: rgba(57,180,216,0.1);
+  color: var(--sky-deep);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 28px;
+}
+.mode-title {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--navy);
+  margin-bottom: 36px;
+  line-height: 1.2;
+}
+.mode-steps { display: flex; flex-direction: column; gap: 28px; }
+.mode-step { display: flex; gap: 18px; }
+.step-num {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 300;
+  color: rgba(57,180,216,0.25);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 30px;
+}
+.step-title { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; color: var(--navy); margin-bottom: 4px; }
+.step-desc { font-size: 0.78rem; color: var(--text-soft); line-height: 1.6; }
+
+/* ─── PRODUCT SECTION ─── */
+.product-sec { background: var(--white); }
+.product-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+.product-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.prod-main-img {
+  grid-column: 1 / -1;
+  background: var(--sky-pale);
+  border-radius: 24px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s var(--ease-out);
+}
+.prod-main-img:hover { transform: scale(1.01); }
+.prod-main-img img { width: 60%; object-fit: contain; transition: transform 0.6s var(--ease-out); }
+.prod-main-img:hover img { transform: scale(1.05) rotate(-1deg); }
+.prod-thumb {
+  background: var(--sky-pale);
+  border-radius: 18px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s var(--ease-out);
+  border: 1.5px solid transparent;
+}
+.prod-thumb:hover { background: var(--sky-light); transform: scale(1.03); border-color: var(--sky-mid); }
+.prod-thumb img { width: 80%; object-fit: contain; }
+.prod-deco-card {
+  background: linear-gradient(135deg, var(--sky-pale), var(--sky-light));
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  color: var(--sky-vivid);
+  font-style: italic;
+  font-weight: 300;
+}
+.prod-details {}
+.prod-name {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 300;
+  color: var(--navy);
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.prod-by { font-size: 0.76rem; color: var(--text-faint); letter-spacing: 0.08em; margin-bottom: 24px; }
+.prod-stars-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.prod-stars { color: var(--gold); font-size: 0.9rem; }
+.prod-review-ct { font-size: 0.7rem; color: var(--text-soft); }
+.prod-price { font-family: var(--serif); font-size: 2.4rem; font-weight: 400; color: var(--navy); margin-bottom: 24px; }
+.prod-desc { font-size: 0.88rem; color: var(--text-body); line-height: 1.8; margin-bottom: 32px; }
+.prod-badges { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 36px; }
+.prod-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.67rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  background: var(--sky-pale);
+  padding: 8px 14px;
+  border-radius: 20px;
+}
+.prod-badge svg { width: 15px; height: 15px; stroke: var(--sky-vivid); stroke-width: 1.8; fill: none; }
+.prod-cta { display: flex; flex-direction: column; gap: 12px; }
+.btn-cta-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 17px;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: all 0.3s var(--ease-out);
+  box-shadow: 0 6px 24px rgba(11,45,61,0.22);
+}
+.btn-cta-primary:hover { background: var(--sky-deep); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(11,45,61,0.3); }
+.btn-cta-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--navy);
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(11,45,61,0.18);
+  text-decoration: none;
+  transition: all 0.3s var(--ease-out);
+}
+.btn-cta-secondary:hover { border-color: var(--sky-vivid); color: var(--sky-vivid); }
+.ship-note { font-size: 0.68rem; color: var(--text-faint); text-align: center; }
+
+/* ─── STORY ─── */
+.story { background: var(--sky-pale); position: relative; overflow: hidden; }
+.story-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+.story-imgs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  position: relative;
+}
+.story-img-big {
+  grid-row: 1 / 3;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--sky-light);
+  aspect-ratio: 2/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.story-img-big img { width: 80%; object-fit: contain; transition: transform 0.7s var(--ease-out); }
+.story-img-big:hover img { transform: scale(1.04); }
+.story-img-sm {
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--sky-pale);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(57,180,216,0.2);
+}
+.story-img-sm img { width: 85%; object-fit: contain; transition: transform 0.5s var(--ease-out); }
+.story-img-sm:hover img { transform: scale(1.05); }
+.story-float {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  background: var(--navy);
+  border-radius: 20px;
+  padding: 22px 26px;
+  color: white;
+  box-shadow: 0 16px 48px rgba(11,45,61,0.25);
+}
+.story-float-num {
+  font-family: var(--serif);
+  font-size: 2.4rem;
+  font-weight: 300;
+  color: var(--sky-mid);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.story-float-label { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+.story-content {}
+.story-body { margin-top: 24px; }
+.story-body p { font-size: 0.92rem; color: var(--text-body); line-height: 1.9; }
+.story-body p + p { margin-top: 18px; }
+.story-quote {
+  margin-top: 40px;
+  padding: 28px 32px;
+  background: var(--white);
+  border-radius: 18px;
+  border-left: 3px solid var(--sky-vivid);
+  box-shadow: 0 4px 20px rgba(57,180,216,0.1);
+}
+.story-quote p {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+.story-quote cite { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sky-deep); font-style: normal; }
+.story-stats { display: flex; gap: 32px; margin-top: 40px; padding-top: 36px; border-top: 1px solid rgba(57,180,216,0.15); }
+.stat-num {
+  font-family: var(--serif);
+  font-size: 2.4rem;
+  font-weight: 300;
+  color: var(--navy);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-label { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-soft); }
+
+/* ─── TESTIMONIALS ─── */
+.testimonials { background: var(--navy); color: white; }
+.testimonials .s-kicker { color: var(--sky-mid); }
+.testimonials .s-kicker::before { background: var(--sky-mid); }
+.testimonials .s-title { color: white; margin-bottom: 64px; }
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.testi-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(160,216,239,0.15);
+  border-radius: 20px;
+  padding: 40px 36px;
+  transition: background 0.3s, transform 0.4s var(--ease-out), border-color 0.3s;
+}
+.testi-card:hover { background: rgba(57,180,216,0.08); transform: translateY(-4px); border-color: rgba(160,216,239,0.3); }
+.testi-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 20px; }
+.testi-text {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+.testi-author { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sky-mid); }
+
+/* ─── USES ─── */
+.uses { background: var(--sky-light); }
+.uses-head { text-align: center; margin-bottom: 64px; }
+.uses-head .s-kicker { justify-content: center; }
+.uses-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.use-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 32px 26px;
+  border: 1.5px solid transparent;
+  transition: border-color 0.3s, transform 0.3s var(--ease-out), box-shadow 0.3s;
+}
+.use-card:hover { border-color: var(--sky-mid); transform: translateY(-4px); box-shadow: 0 12px 36px rgba(57,180,216,0.15); }
+.use-icon { font-size: 1.5rem; margin-bottom: 14px; }
+.use-name { font-family: var(--serif); font-size: 1rem; font-weight: 400; color: var(--navy); margin-bottom: 8px; }
+.use-desc { font-size: 0.76rem; color: var(--text-soft); line-height: 1.6; }
+
+/* ─── CTA BAND ─── */
+.cta-band {
+  background: linear-gradient(120deg, var(--sky-vivid) 0%, var(--sky-deep) 60%, var(--navy) 100%);
+  padding: 100px 52px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(255,255,255,0.06)'/%3E%3C/svg%3E");
+}
+.cta-band .s-title { color: white; margin-bottom: 20px; }
+.cta-band p { font-size: 0.95rem; color: rgba(255,255,255,0.75); max-width: 420px; margin: 0 auto 44px; line-height: 1.7; }
+.cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: var(--navy);
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 16px 32px;
+  border-radius: 40px;
+  text-decoration: none;
+  transition: all 0.3s var(--ease-out);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+}
+.btn-white:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.2); }
+.btn-ghost-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: white;
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 15px 32px;
+  border-radius: 40px;
+  border: 1.5px solid rgba(255,255,255,0.45);
+  text-decoration: none;
+  transition: all 0.3s var(--ease-out);
+}
+.btn-ghost-white:hover { border-color: white; background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+
+/* ─── INSTAGRAM ─── */
+.instagram { background: var(--white); padding: 80px 52px; }
+.insta-head { text-align: center; margin-bottom: 40px; }
+.insta-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.insta-tile {
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background: var(--sky-pale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+.insta-tile::after {
+  content: '♡';
+  position: absolute;
+  inset: 0;
+  background: rgba(57,180,216,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s;
+  backdrop-filter: blur(4px);
+}
+.insta-tile:hover::after { opacity: 1; }
+.insta-tile img { width: 80%; object-fit: contain; transition: transform 0.5s var(--ease-out); }
+.insta-tile:hover img { transform: scale(1.08); }
+
+/* ─── FOOTER ─── */
+footer { background: var(--navy); color: rgba(255,255,255,0.7); padding: 72px 52px 40px; }
+.footer-inner { max-width: 1180px; margin: 0 auto; }
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 64px;
+  padding-bottom: 52px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 32px;
+}
+.footer-logo { font-family: var(--serif); font-size: 1.4rem; letter-spacing: 0.14em; text-transform: uppercase; color: white; margin-bottom: 14px; display: block; }
+.footer-logo span { color: var(--sky-mid); }
+.footer-tagline { font-size: 0.8rem; line-height: 1.7; max-width: 240px; color: rgba(255,255,255,0.45); }
+.footer-col-title { font-size: 0.58rem; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--sky-mid); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; }
+.footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.22); }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 0.68rem; color: rgba(255,255,255,0.22); text-decoration: none; transition: color 0.2s; }
+.footer-legal a:hover { color: var(--sky-mid); }
+
+/* ─── SCROLL REVEAL ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+.reveal.from-left { transform: translateX(-32px); }
+.reveal.from-left.in { transform: translateX(0); }
+.reveal.from-right { transform: translateX(32px); }
+.reveal.from-right.in { transform: translateX(0); }
+.d1 { transition-delay: 0.1s; }
+.d2 { transition-delay: 0.2s; }
+.d3 { transition-delay: 0.3s; }
+.d4 { transition-delay: 0.4s; }
+.d5 { transition-delay: 0.5s; }
+.d6 { transition-delay: 0.6s; }
+
+/* ─── PARALLAX LAYERS ─── */
+.parallax-img { will-change: transform; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 960px) {
+  nav { padding: 16px 24px; }
+  nav.scrolled { padding: 12px 24px; }
+  .nav-links { display: none; }
+  section { padding: 80px 24px; }
+  .hero { grid-template-columns: 1fr; padding: 120px 24px 60px; min-height: auto; }
+  .hero-visual { height: 55vw; }
+  .hero-content { padding-right: 0; }
+  .conditions-top { grid-template-columns: 1fr; gap: 40px; }
+  .cond-grid { grid-template-columns: 1fr; }
+  .ingredient-inner { grid-template-columns: 1fr; }
+  .ingr-visual { min-height: 320px; }
+  .how-to-top { flex-direction: column; }
+  .how-to-note { text-align: left; }
+  .how-to-grid { grid-template-columns: 1fr; }
+  .product-inner { grid-template-columns: 1fr; }
+  .story-inner { grid-template-columns: 1fr; }
+  .story-float { display: none; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .uses-grid { grid-template-columns: 1fr 1fr; }
+  .insta-grid { grid-template-columns: repeat(3, 1fr); }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .footer-bottom { flex-direction: column; gap: 16px; }
+  #cursor, #cursor-ring { display: none; }
+  body { cursor: auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Eyegenic<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#conditions">Conditions</a></li>
+    <li><a href="#ingredient">Science</a></li>
+    <li><a href="#how-to">How To Use</a></li>
+    <li><a href="#story">Our Story</a></li>
+  </ul>
+  <a href="https://www.amazon.com/dp/B0FQZ1Z9S1" class="nav-cta" target="_blank">Shop Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="blob-wrap">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-kicker"><span class="kicker-dot"></span>By Dr. Jennifer Tsai, OD · Optometrist-Formulated</div>
+    <h1 class="hero-h1">Powerful.<br>Yet <em>perfectly gentle.</em></h1>
+    <p class="hero-sub">Science-backed, all-natural eye care that relieves dryness, redness, and irritation — formulated by an optometrist, trusted worldwide.</p>
+    <div class="hero-btns">
+      <a href="https://www.amazon.com/dp/B0FQZ1Z9S1" class="btn-primary" target="_blank">Shop the Mist — $24.95</a>
+      <a href="#ingredient" class="btn-outline">Explore the Science</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><span class="trust-icon">⭐</span> 5.0 Rating</div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><span class="trust-icon">🇺🇸</span> Made in the USA</div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><span class="trust-icon">✓</span> 30-Day Guarantee</div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-img-stack">
+      <div class="hero-circle-deco"></div>
+      <img class="hero-product-img"
+           src="https://eyegenic.co/cdn/shop/files/gempages_558030245651809413-92deebd0-99fb-4c18-b8ee-646bda2d4ff5.png?v=4693345914663242601"
+           alt="Eyegenic Daily Cleansing Mist"
+           id="heroImg">
+
+      <div class="hero-float-card-1">
+        <div class="fcard-icon">✨</div>
+        <div>
+          <div class="fcard-label">Formula</div>
+          <div class="fcard-val">HOCl 0.02%</div>
+        </div>
+      </div>
+      <div class="hero-float-card-2">
+        <div class="fcard-stars">★★★★★</div>
+        <div class="fcard-label" style="margin-top:4px">Trusted Worldwide</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEDIA BAR -->
+<div class="media-bar">
+  <div class="media-bar-inner">
+    <span class="media-kicker">Featured In</span>
+    <span class="media-sep">◆</span><span class="media-name">Vogue</span>
+    <span class="media-sep">◆</span><span class="media-name">Forbes</span>
+    <span class="media-sep">◆</span><span class="media-name">CNN</span>
+    <span class="media-sep">◆</span><span class="media-name">Good Morning America</span>
+    <span class="media-sep">◆</span><span class="media-name">Harper's Bazaar</span>
+    <span class="media-sep">◆</span><span class="media-name">Allure</span>
+    <span class="media-sep">◆</span><span class="media-name">Cosmopolitan</span>
+    <span class="media-sep">◆</span><span class="media-name">Refinery29</span>
+    <span class="media-sep">◆</span><span class="media-name">Fox 5 NY</span>
+    <!-- Duplicate for loop -->
+    <span class="media-kicker">Featured In</span>
+    <span class="media-sep">◆</span><span class="media-name">Vogue</span>
+    <span class="media-sep">◆</span><span class="media-name">Forbes</span>
+    <span class="media-sep">◆</span><span class="media-name">CNN</span>
+    <span class="media-sep">◆</span><span class="media-name">Good Morning America</span>
+    <span class="media-sep">◆</span><span class="media-name">Harper's Bazaar</span>
+    <span class="media-sep">◆</span><span class="media-name">Allure</span>
+    <span class="media-sep">◆</span><span class="media-name">Cosmopolitan</span>
+    <span class="media-sep">◆</span><span class="media-name">Refinery29</span>
+    <span class="media-sep">◆</span><span class="media-name">Fox 5 NY</span>
+  </div>
+</div>
+
+<!-- CONDITIONS -->
+<section class="conditions" id="conditions">
+  <div class="container">
+    <div class="conditions-top">
+      <div class="conditions-image-col reveal from-left">
+        <div class="cond-img-main parallax-img" data-speed="0.06">
+          <img src="https://eyegenic.co/cdn/shop/files/gempages_558030245651809413-92deebd0-99fb-4c18-b8ee-646bda2d4ff5.png?v=4693345914663242601"
+               alt="Eyegenic Mist">
+        </div>
+        <div class="cond-img-stack">
+          <div class="cond-img-thumb parallax-img" data-speed="-0.05">
+            <img src="https://eyegenic.co/cdn/shop/files/preview_images/ba8960e799d64659b941e5dee8098313.thumbnail.0000000000_1024x1024.jpg?v=1744792573"
+                 alt="Eyegenic use">
+          </div>
+          <div class="cond-img-thumb parallax-img" data-speed="0.04">
+            <img src="https://eyegenic.co/cdn/shop/files/preview_images/0ed91eb4acb447d4a1f9add8270b8017.thumbnail.0000000000_1024x1024.jpg?v=1744792921"
+                 alt="Eyegenic detail">
+          </div>
+        </div>
+      </div>
+      <div class="cond-content reveal from-right">
+        <div class="s-kicker">Fast Relief</div>
+        <h2 class="s-title">Six common conditions.<br><em>One gentle mist.</em></h2>
+        <p class="s-body cond-desc">
+          Our award-winning formula targets the root causes of common eye discomfort — delivering clinical-grade results in seconds, with zero sting or irritation.
+        </p>
+      </div>
+    </div>
+
+    <div class="cond-grid">
+      <div class="cond-card reveal d1">
+        <span class="cond-num">01</span>
+        <div class="cond-icon-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="cond-name">Blepharitis</h3>
+        <p class="cond-text">Red, swollen eyelids caused by bacteria buildup along the lash line.</p>
+      </div>
+      <div class="cond-card reveal d2">
+        <span class="cond-num">02</span>
+        <div class="cond-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="cond-name">Styes & Infections</h3>
+        <p class="cond-text">Naturally fights bacteria to speed healing and reduce painful swelling.</p>
+      </div>
+      <div class="cond-card reveal d3">
+        <span class="cond-num">03</span>
+        <div class="cond-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7z" stroke-linecap="round"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <h3 class="cond-name">Dry Eyes</h3>
+        <p class="cond-text">Hydrates and soothes surface irritation for immediate, lasting comfort.</p>
+      </div>
+      <div class="cond-card reveal d4">
+        <span class="cond-num">04</span>
+        <div class="cond-icon-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-linecap="round"/><path d="M8 12h8M12 8v8" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="cond-name">Pink Eye</h3>
+        <p class="cond-text">Reduces conjunctivitis inflammation and relieves discomfort gently.</p>
+      </div>
+      <div class="cond-card reveal d5">
+        <span class="cond-num">05</span>
+        <div class="cond-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M3 12s4-7 9-7 9 7 9 7-4 7-9 7-9-7-9-7z" stroke-linecap="round"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        <h3 class="cond-name">Itchy, Irritated Eyes</h3>
+        <p class="cond-text">Calms allergic reactions and environmental irritants on contact.</p>
+      </div>
+      <div class="cond-card reveal d6">
+        <span class="cond-num">06</span>
+        <div class="cond-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M7 10h10M7 14h10" stroke-linecap="round"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
+        </div>
+        <h3 class="cond-name">Lash & Lid Hygiene</h3>
+        <p class="cond-text">Keeps eyes clean, fresh, and free from debris — anytime, anywhere.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INGREDIENT -->
+<div class="ingredient" id="ingredient">
+  <div class="ingredient-inner">
+    <div class="ingr-visual">
+      <div class="ingr-visual-bg"></div>
+      <div class="ingr-ring"></div>
+      <div class="ingr-ring"></div>
+      <div class="ingr-ring"></div>
+      <img src="https://eyegenic.co/cdn/shop/files/gempages_558030245651809413-92deebd0-99fb-4c18-b8ee-646bda2d4ff5.png?v=4693345914663242601"
+           alt="Eyegenic Daily Cleansing Mist" class="parallax-img" data-speed="-0.08">
+      <span class="ingr-label">Eyegenic Daily Cleansing Mist · 0.02% HOCl</span>
+    </div>
+    <div class="ingr-content">
+      <div class="s-kicker reveal">The Hero Ingredient</div>
+      <h2 class="s-title reveal d1">The science of<br><em>pure clarity.</em></h2>
+      <div class="ingr-formula reveal d2">HOCl</div>
+      <p class="ingr-text reveal d2">
+        Hypochlorous Acid — a molecule your own immune system produces — is the engine behind Eyegenic. Potently antimicrobial and anti-inflammatory, it destroys bacteria without harming delicate eye tissue. No steroids. No preservatives. No fragrances.
+      </p>
+      <div class="ingr-pills reveal d3">
+        <span class="pill">Alcohol-Free</span>
+        <span class="pill">Steroid-Free</span>
+        <span class="pill">Preservative-Free</span>
+        <span class="pill">Fragrance-Free</span>
+        <span class="pill">All-Natural</span>
+        <span class="pill">Clinically Backed</span>
+      </div>
+      <div class="ingr-list reveal d4">
+        <p class="ingr-list-label">Full Ingredient List</p>
+        <p class="ingr-list-val">Electrolyzed Water, Sodium Chloride, Hypochlorous Acid .02%</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW TO USE -->
+<section class="how-to" id="how-to">
+  <div class="container">
+    <div class="how-to-top">
+      <div>
+        <div class="s-kicker reveal">Application</div>
+        <h2 class="s-title reveal d1">Two ways to<br><em>experience relief.</em></h2>
+      </div>
+      <p class="how-to-note reveal">Safe for daily use. Suitable for contact lens wearers, makeup users, and the whole family.</p>
+    </div>
+    <div class="how-to-grid">
+      <div class="mode-block reveal from-left">
+        <span class="mode-tag">Daily Ritual</span>
+        <h3 class="mode-title">Spray & Go</h3>
+        <div class="mode-steps">
+          <div class="mode-step">
+            <span class="step-num">1</span>
+            <div><p class="step-title">Close Your Eyes</p><p class="step-desc">Gently close your eyes and hold naturally, face upward.</p></div>
+          </div>
+          <div class="mode-step">
+            <span class="step-num">2</span>
+            <div><p class="step-title">Mist 2–3 Times</p><p class="step-desc">Spray directly onto closed eyelids from 6–8 inches. No rubbing needed.</p></div>
+          </div>
+          <div class="mode-step">
+            <span class="step-num">3</span>
+            <div><p class="step-title">Air Dry & Repeat</p><p class="step-desc">Let air dry completely. Safe to repeat as needed throughout the day.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="mode-block reveal from-right d2">
+        <span class="mode-tag">Deep Cleanse</span>
+        <h3 class="mode-title">Pad Application</h3>
+        <div class="mode-steps">
+          <div class="mode-step">
+            <span class="step-num">1</span>
+            <div><p class="step-title">Prep a Clean Pad</p><p class="step-desc">Spray onto a fresh cotton pad until it is lightly damp.</p></div>
+          </div>
+          <div class="mode-step">
+            <span class="step-num">2</span>
+            <div><p class="step-title">Wipe the Lash Line</p><p class="step-desc">Gently sweep across eyelids, lash base, and surrounding skin.</p></div>
+          </div>
+          <div class="mode-step">
+            <span class="step-num">3</span>
+            <div><p class="step-title">Air Dry & Repeat</p><p class="step-desc">Use a fresh pad per eye. Ideal for targeted relief during flare-ups.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT SECTION -->
+<section class="product-sec" id="product">
+  <div class="container">
+    <div class="product-inner">
+      <div class="product-gallery reveal from-left">
+        <div class="prod-main-img">
+          <img src="https://eyegenic.co/cdn/shop/files/gempages_558030245651809413-92deebd0-99fb-4c18-b8ee-646bda2d4ff5.png?v=4693345914663242601"
+               alt="Eyegenic Daily Cleansing Mist">
+        </div>
+        <div class="prod-thumb">
+          <img src="https://eyegenic.co/cdn/shop/files/preview_images/ba8960e799d64659b941e5dee8098313.thumbnail.0000000000_1024x1024.jpg?v=1744792573"
+               alt="Eyegenic lifestyle">
+        </div>
+        <div class="prod-thumb">
+          <img src="https://eyegenic.co/cdn/shop/files/preview_images/0ed91eb4acb447d4a1f9add8270b8017.thumbnail.0000000000_1024x1024.jpg?v=1744792921"
+               alt="Eyegenic detail">
+        </div>
+        <div class="prod-deco-card">HOCl</div>
+      </div>
+
+      <div class="prod-details reveal from-right d2">
+        <div class="s-kicker">Eyegenic Eye Care</div>
+        <h2 class="prod-name">Daily Cleansing Mist</h2>
+        <p class="prod-by">By Dr. Jennifer Tsai, OD &nbsp;·&nbsp; Optometrist-Formulated</p>
+        <div class="prod-stars-row">
+          <span class="prod-stars">★★★★★</span>
+          <span class="prod-review-ct">5.0 · 1 Review</span>
+        </div>
+        <p class="prod-price">$24.95</p>
+        <p class="prod-desc">
+          The award-winning eye mist trusted by eye care clinics worldwide. Science-backed, all-natural, and gentle enough for daily use — yet powerful enough to address blepharitis, styes, dry eyes, and more.
+        </p>
+        <div class="prod-badges">
+          <span class="prod-badge">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Made in USA
+          </span>
+          <span class="prod-badge">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3" stroke-linecap="round"/></svg>
+            30-Day Guarantee
+          </span>
+          <span class="prod-badge">
+            <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" stroke-linecap="round"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            Free Ship $49+
+          </span>
+          <span class="prod-badge">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+            Easy Returns
+          </span>
+        </div>
+        <div class="prod-cta">
+          <a href="https://www.amazon.com/dp/B0FQZ1Z9S1" class="btn-cta-primary" target="_blank">Buy on Amazon</a>
+          <p class="ship-note">Free shipping on orders $49+ &nbsp;·&nbsp; Easy 30-day returns</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story" id="story">
+  <div class="container">
+    <div class="story-inner">
+      <div class="story-imgs reveal from-left">
+        <div class="story-img-big parallax-img" data-speed="0.05">
+          <img src="https://eyegenic.co/cdn/shop/files/gempages_558030245651809413-92deebd0-99fb-4c18-b8ee-646bda2d4ff5.png?v=4693345914663242601"
+               alt="Eyegenic product">
+        </div>
+        <div class="story-img-sm parallax-img" data-speed="-0.06">
+          <img src="https://eyegenic.co/cdn/shop/files/preview_images/ba8960e799d64659b941e5dee8098313.thumbnail.0000000000_1024x1024.jpg?v=1744792573"
+               alt="Eyegenic use">
+        </div>
+        <div class="story-img-sm parallax-img" data-speed="0.04">
+          <img src="https://eyegenic.co/cdn/shop/files/preview_images/0ed91eb4acb447d4a1f9add8270b8017.thumbnail.0000000000_1024x1024.jpg?v=1744792921"
+               alt="Eyegenic detail">
+        </div>
+        <div class="story-float">
+          <div class="story-float-num" data-count="9">9+</div>
+          <div class="story-float-label">Conditions treated</div>
+        </div>
+      </div>
+
+      <div class="story-content reveal from-right d1">
+        <div class="s-kicker">Our Story</div>
+        <h2 class="s-title">Born in the<br><em>clinic.</em></h2>
+        <div class="story-body">
+          <p>Eyegenic was born from a simple yet essential need — better eyelid hygiene. As an optometrist, Dr. Jennifer Tsai saw firsthand how eye irritation, dryness, and bacterial buildup impacted daily life for thousands of patients.</p>
+          <p>With no truly effective, luxury-grade solutions on the market, she set out to redefine what eye care could look and feel like. Designed for busy professionals, skincare enthusiasts, and wellness seekers.</p>
+          <p>The result: a Hypochlorous Acid Daily Cleansing Mist that brings science-backed eyelid hygiene into everyday routines. Gentle yet powerful. Clinical yet beautiful.</p>
+        </div>
+        <div class="story-quote">
+          <p>"I've never felt more confident recommending a single product to every patient who walks through my door."</p>
+          <cite>— Dr. Jennifer Tsai, OD, Founder</cite>
+        </div>
+        <div class="story-stats">
+          <div>
+            <div class="stat-num" data-count="0.02">0.02%</div>
+            <div class="stat-label">Optimal HOCl</div>
+          </div>
+          <div>
+            <div class="stat-num" data-count="100">100%</div>
+            <div class="stat-label">Natural Formula</div>
+          </div>
+          <div>
+            <div class="stat-num" data-count="9">9+</div>
+            <div class="stat-label">Uses & Conditions</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="container">
+    <div class="s-kicker reveal">Patient Reviews</div>
+    <h2 class="s-title reveal d1">What our community<br><em>is saying.</em></h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal d2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I've struggled with blepharitis for years and nothing gave me relief this fast. The mist feels incredibly gentle — like it was made for my eyes specifically."</p>
+        <span class="testi-author">— Sarah K., Verified Buyer</span>
+      </div>
+      <div class="testi-card reveal d3">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"As a contact lens wearer with perpetually dry eyes, this has become non-negotiable in my routine. Spray it on, let it dry, done. The simplicity is genius."</p>
+        <span class="testi-author">— Marcus T., Verified Buyer</span>
+      </div>
+      <div class="testi-card reveal d4">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"When I found out the founder IS an optometrist, it all clicked. This product is what happens when science meets skincare. Absolutely remarkable."</p>
+        <span class="testi-author">— Priya M., Verified Buyer</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USES -->
+<section class="uses">
+  <div class="container">
+    <div class="uses-head">
+      <div class="s-kicker reveal" style="justify-content:center">Beyond the Eyes</div>
+      <h2 class="s-title reveal d1">Versatile <em>by design.</em></h2>
+    </div>
+    <div class="uses-grid">
+      <div class="use-card reveal d1"><div class="use-icon">✦</div><h3 class="use-name">Acne & Breakouts</h3><p class="use-desc">Reduces bacteria and calms inflammation without drying sensitive skin.</p></div>
+      <div class="use-card reveal d2"><div class="use-icon">✦</div><h3 class="use-name">Eczema & Dermatitis</h3><p class="use-desc">Non-stinging formula soothes flare-ups and reduces microbial load.</p></div>
+      <div class="use-card reveal d3"><div class="use-icon">✦</div><h3 class="use-name">Post-Procedure</h3><p class="use-desc">Used after microneedling, peels, and laser to reduce infection risk.</p></div>
+      <div class="use-card reveal d4"><div class="use-icon">✦</div><h3 class="use-name">Rosacea</h3><p class="use-desc">Gentle alternative to harsh topical treatments for calming redness.</p></div>
+      <div class="use-card reveal d1"><div class="use-icon">✦</div><h3 class="use-name">Wound Healing</h3><p class="use-desc">Prevents infection and speeds healing of cuts and abrasions.</p></div>
+      <div class="use-card reveal d2"><div class="use-icon">✦</div><h3 class="use-name">Skin Irritation</h3><p class="use-desc">Soothes post-shave, wax, or cosmetic procedure irritation instantly.</p></div>
+      <div class="use-card reveal d3"><div class="use-icon">✦</div><h3 class="use-name">Razor Burn</h3><p class="use-desc">Reduces ingrown hairs and calms post-shave inflammation quickly.</p></div>
+      <div class="use-card reveal d4"><div class="use-icon">✦</div><h3 class="use-name">Fungal Conditions</h3><p class="use-desc">Antifungal activity assists in clearing minor infections gently.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM STRIP -->
+<section class="instagram">
+  <div class="container">
+    <div class="insta-head">
+      <div class="s-kicker reveal" style="justify-content:center">Find Us</div>
+      <h2 class="s-title reveal d1" style="font-size:2rem">@eyegenic on Instagram</h2>
+    </div>
+    <div class="insta-grid">
+      <div class="insta-tile reveal d1">
+        <img src="https://eyegenic.co/cdn/shop/files/gempages_558030245651809413-92deebd0-99fb-4c18-b8ee-646bda2d4ff5.png?v=4693345914663242601" alt="">
+      </div>
+      <div class="insta-tile reveal d2">
+        <img src="https://eyegenic.co/cdn/shop/files/preview_images/ba8960e799d64659b941e5dee8098313.thumbnail.0000000000_1024x1024.jpg?v=1744792573" alt="">
+      </div>
+      <div class="insta-tile reveal d3">
+        <img src="https://eyegenic.co/cdn/shop/files/preview_images/0ed91eb4acb447d4a1f9add8270b8017.thumbnail.0000000000_1024x1024.jpg?v=1744792921" alt="">
+      </div>
+      <div class="insta-tile reveal d4">
+        <img src="https://eyegenic.co/cdn/shop/files/gempages_558030245651809413-92deebd0-99fb-4c18-b8ee-646bda2d4ff5.png?v=4693345914663242601" alt="" style="filter:hue-rotate(20deg) saturate(1.2);">
+      </div>
+      <div class="insta-tile reveal d5">
+        <img src="https://eyegenic.co/cdn/shop/files/preview_images/ba8960e799d64659b941e5dee8098313.thumbnail.0000000000_1024x1024.jpg?v=1744792573" alt="" style="filter:contrast(1.1) brightness(1.05);">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="container" style="position:relative;z-index:1">
+    <div class="s-kicker reveal" style="justify-content:center;color:rgba(255,255,255,0.7)">Ready to start?</div>
+    <h2 class="s-title reveal d1" style="color:white;margin-bottom:20px">Your daily ritual<br><em style="color:rgba(255,255,255,0.7)">starts here.</em></h2>
+    <p class="reveal d2">Science-backed. Optometrist-formulated. Gentle enough for every day. Powerful enough to change your routine forever.</p>
+    <div class="cta-btns reveal d3">
+      <a href="https://www.amazon.com/dp/B0FQZ1Z9S1" class="btn-white" target="_blank">Shop on Amazon — $24.95</a>
+      <a href="https://eyegenic.co" class="btn-ghost-white" target="_blank">Visit Eyegenic.co</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <span class="footer-logo">Eyegenic<span>.</span></span>
+        <p class="footer-tagline">Science-backed eye care for everyday life. Formulated by Dr. Jennifer Tsai, OD.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Product</p>
+        <ul class="footer-links">
+          <li><a href="https://eyegenic.co" target="_blank">Daily Cleansing Mist</a></li>
+          <li><a href="https://www.amazon.com/dp/B0FQZ1Z9S1" target="_blank">Buy on Amazon</a></li>
+          <li><a href="#ingredient">The Science</a></li>
+          <li><a href="#how-to">How to Use</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Company</p>
+        <ul class="footer-links">
+          <li><a href="#story">Our Story</a></li>
+          <li><a href="https://lineofsight.co" target="_blank">Line of Sight Clinic</a></li>
+          <li><a href="https://eyegenic.co" target="_blank">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Connect</p>
+        <ul class="footer-links">
+          <li><a href="https://www.instagram.com/lineofsightvision" target="_blank">Instagram</a></li>
+          <li><a href="https://www.amazon.com/dp/B0FQZ1Z9S1" target="_blank">Amazon Store</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Eyegenic Eye Care. All rights reserved.</p>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Returns</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── CURSOR ───
+const cur = document.getElementById('cursor');
+const curRing = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animCursor() {
+  cur.style.left = mx + 'px';
+  cur.style.top  = my + 'px';
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  curRing.style.left = rx + 'px';
+  curRing.style.top  = ry + 'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cur.style.width = '20px'; cur.style.height = '20px';
+    curRing.style.width = '60px'; curRing.style.height = '60px';
+    curRing.style.opacity = '0.25';
+  });
+  el.addEventListener('mouseleave', () => {
+    cur.style.width = '12px'; cur.style.height = '12px';
+    curRing.style.width = '40px'; curRing.style.height = '40px';
+    curRing.style.opacity = '0.5';
+  });
+});
+
+// ─── NAV SCROLL ───
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+}, { passive: true });
+
+// ─── SCROLL REVEAL ───
+const reveals = document.querySelectorAll('.reveal');
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+reveals.forEach(el => revObs.observe(el));
+
+// ─── PARALLAX ───
+const parallaxEls = document.querySelectorAll('.parallax-img');
+function doParallax() {
+  const sy = window.scrollY;
+  parallaxEls.forEach(el => {
+    const speed = parseFloat(el.dataset.speed || 0);
+    const rect = el.getBoundingClientRect();
+    const center = rect.top + rect.height / 2;
+    const offset = (center - window.innerHeight / 2) * speed;
+    el.style.transform = `translateY(${offset}px)`;
+  });
+}
+window.addEventListener('scroll', doParallax, { passive: true });
+doParallax();
+
+// ─── BLOB MOUSE DRIFT ───
+const blobs = document.querySelectorAll('.blob');
+window.addEventListener('mousemove', e => {
+  const fx = (e.clientX / window.innerWidth - 0.5) * 30;
+  const fy = (e.clientY / window.innerHeight - 0.5) * 30;
+  blobs.forEach((b, i) => {
+    const factor = (i + 1) * 0.4;
+    b.style.transform = `translate(${fx * factor}px, ${fy * factor}px)`;
+  });
+});
+
+// ─── TILT on product hero image ───
+const heroImg = document.getElementById('heroImg');
+if (heroImg) {
+  const stack = heroImg.closest('.hero-img-stack');
+  stack.addEventListener('mousemove', e => {
+    const r = stack.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width  - 0.5) * 12;
+    const y = ((e.clientY - r.top)  / r.height - 0.5) * -12;
+    heroImg.style.transform = `perspective(800px) rotateY(${x}deg) rotateX(${y}deg) translateY(${heroImg._bobOffset || 0}px)`;
+  });
+  stack.addEventListener('mouseleave', () => {
+    heroImg.style.transform = '';
+  });
+}
+
+// ─── COUNTER ANIMATION ───
+function animCount(el) {
+  const target = parseFloat(el.textContent);
+  if (isNaN(target)) return;
+  const isFloat = el.textContent.includes('.');
+  const suffix = el.textContent.replace(/[\d.]/g, '');
+  let start = 0;
+  const dur = 1800;
+  const t0 = performance.now();
+  function step(now) {
+    const p = Math.min((now - t0) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = target * ease;
+    el.textContent = (isFloat ? val.toFixed(2) : Math.round(val)) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+const countEls = document.querySelectorAll('.stat-num[data-count], .story-float-num[data-count]');
+const countObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { animCount(e.target); countObs.unobserve(e.target); }
+  });
+}, { threshold: 0.5 });
+countEls.forEach(el => countObs.observe(el));
+
+// ─── HERO PRODUCT PARALLAX ON SCROLL ───
+window.addEventListener('scroll', () => {
+  if (!heroImg) return;
+  const sy = window.scrollY;
+  heroImg._bobOffset = 0;
+  // Only apply when not being hovered (the float animation handles it)
+}, { passive: true });
+
+// ─── IMAGE HOVER TILT (product cards) ───
+document.querySelectorAll('.cond-card, .testi-card, .use-card, .mode-block').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width  - 0.5) * 5;
+    const y = ((e.clientY - r.top)  / r.height - 0.5) * -5;
+    card.style.transform = `translateY(-4px) perspective(600px) rotateY(${x}deg) rotateX(${y}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+</script>
+</body>
+</html>
